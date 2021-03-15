@@ -1,10 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cn">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Title</title>
 </head>
 <body>
-$END$
+<h1>Ajax Demo</h1>
+<div id="app">
+    编号 <span v-text="user.id"></span> <br>
+    名字 <span v-for="n in user.name" v-text="n"></span>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.12/vue.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+<script>
+    let app=new Vue({
+        el:'#app',
+        data:{
+            user:{id:1,name:["TOM","JERRY"]}
+        },
+        methods:{
+            loadUser:function () {
+                //从服务器中获取用户数据
+                $.ajax({
+                    url:"/api/user",
+                    type:"get",
+                    dataType:"JSON",
+                    success : function(result){
+                        console.log(result);
+                        app.user=result;
+                    }
+                });
+            }
+        },created:function() {//vue启动时候自动执行方法
+            //网页启动时候 执行以下loadUser()方法
+            this.loadUser();
+        }
+    });
+</script>
 </body>
 </html>
